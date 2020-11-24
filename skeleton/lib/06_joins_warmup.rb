@@ -110,7 +110,7 @@ end
 
 def casablanca_cast
   # Obtain the cast list for 'Casablanca'. Use the id value that you obtained
-  # in the previous question directly in your query (for example, id = 1).
+  # in the previous question directly in your query (id = 27).
   execute(<<-SQL)
      SELECT
       name
@@ -128,11 +128,22 @@ end
 def alien_cast
   # Obtain the cast list for the film 'Alien'
   execute(<<-SQL)
-     SELECT
-      title
+  SELECT
+    name
+  FROM
+    actors
+  JOIN
+    castings
+  ON 
+    actors.id = castings.actor_id
+  WHERE
+    castings.movie_id = (
+      SELECT
+      id
     FROM
       movies
     WHERE
-      id IN ('1119', '1595', '1768')
+      title = 'Alien'
+    )
   SQL
 end
