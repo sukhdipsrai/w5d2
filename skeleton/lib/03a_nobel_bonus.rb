@@ -12,12 +12,13 @@ def physics_no_chemistry
   # In which years was the Physics prize awarded, but no Chemistry prize?
   execute(<<-SQL)
   SELECT
-    yr
+    DISTINCT yr
   FROM
     nobels
-  GROUP BY
-    yr
-  HAVING 
-    subject = 'Physics' IS NOT NULL AND subject = 'Chemistry' IS NULL
+  WHERE subject = 'Physics' 
+  AND yr NOT IN 
+    (SELECT DISTINCT yr
+    FROM nobels
+    WHERE subject = 'Chemistry')
   SQL
 end
